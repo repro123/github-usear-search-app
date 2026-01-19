@@ -10,6 +10,7 @@
   --color-neutral: #141d2f;
   --color-neutral-soft: #4b6a9b;
   --color-neutral-100: #f6f8ff;
+  --color-neutral-300: #697c9a;
   --color-neutral-500: #4b6a9b;
   --color-neutral-700: #2b3442;
   --color-neutral-800: #ffffff;
@@ -29,6 +30,7 @@
     --color-neutral: #ffffff;
     --color-neutral-soft: #90a4d4;
     --color-neutral-100: #141d2f;
+    --color-neutral-300: #90a4d4;
     --color-neutral-500: #ffffff;
     --color-neutral-700: #ffffff;
     --color-neutral-800: #1e2a47;
