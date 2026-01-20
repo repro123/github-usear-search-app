@@ -35,52 +35,66 @@
     <title>GitHub user search app</title>
   </head>
   <body
-    class="font-space-mono min-h-dvh antialiased flex flex-col gap-6 bg-neutral-100 starting:opacity-0 opacity-100 transition-opacity duration-1000"
+    class="font-space-mono min-h-dvh antialiased flex flex-col bg-neutral-100 starting:opacity-0 opacity-100 transition-opacity duration-1000 md:justify-center"
   >
-    <main class="grow md:grid md:place-items-center p-6">
+    <header class="px-6">
+      <div class="flex items-center justify-between max-w-4xl mx-auto pt-2">
+        <h1 class="text-neutral font-bold text-preset-1">devfinder</h1>
+
+        <button
+          type="button"
+          id="toggleModeBtn"
+          class="text-neutral-soft text-preset-8 uppercase flex items-center gap-4 cursor-pointer hover:text-neutral border p-1 border-transparent focus:border-primary focus:outline focus:outline-primary rounded-md group"
+        >
+          <span class="hidden dark:flex items-center gap-2">
+            <span>light</span>
+            <img src="./assets/icon-sun.svg" alt=""
+          /></span>
+          <span class="dark:hidden flex items-center gap-2">
+            <span>dark</span>
+            <img src="./assets/icon-moon.svg" alt=""
+          /></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="md:grid md:place-items-center p-6">
+      <p
+        id="theme-status"
+        class="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+      <p
+        id="results-status"
+        class="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
       <div class="grid gap-8 w-full max-w-4xl mx-auto">
-        <header class="flex items-center justify-between">
-          <h1 class="text-neutral font-bold text-preset-1">devfinder</h1>
-
-          <button
-            type="button"
-            id="toggleModeBtn"
-            aria-label="Switch to mode"
-            class="text-neutral-soft text-preset-8 uppercase flex items-center gap-4 cursor-pointer hover:text-neutral border p-1 border-transparent focus:border-primary focus:outline focus:outline-primary rounded-md group"
-          >
-            <span class="hidden dark:flex items-center gap-2">
-              <span>light</span>
-              <img src="./assets/icon-sun.svg" alt=""
-            /></span>
-            <span class="dark:hidden flex items-center gap-2">
-              <span>dark</span>
-              <img src="./assets/icon-moon.svg" alt=""
-            /></span>
-          </button>
-        </header>
-
         <section class="grid gap-6">
           <form
             id="search-form"
             novalidate
             class="rounded-2xl bg-neutral-800 py-2 px-3 shadow-lg w-full flex items-center gap-2 md:gap-4 text-preset-8 md:text-preset-3 border border-transparent has-data-[invalid=true]:border-error has-focus-within:border-primary"
           >
-            <img src="./assets/icon-search.svg" alt="Search" class="size-6" />
+            <img src="./assets/icon-search.svg" alt="" class="size-6" />
             <label for="search-input" class="sr-only"
               >Search GitHub username</label
             >
             <input
-              type="text"
+              type="search"
               name="search"
               id="search-input"
               data-invalid="false"
-              class="text-neutral-700 w-full outline-0 focus:outline-0 peer"
+              class="text-neutral-700 w-full outline-0 focus:outline-0 peer h-12"
               placeholder="Search GitHub username..."
+              aria-describedby="search-error-msg"
               required
             />
             <span
               id="search-error-msg"
-              class="text-error whitespace-nowrap text-xs md:text-sm tracking-tighter hidden peer-data-[invalid=true]:block starting:opacity-0 opacity-100 transition-opacity duration-1000"
+              class="text-error whitespace-nowrap text-xs md:text-sm tracking-tighter starting:opacity-0 opacity-100 transition-opacity duration-1000"
               aria-live="polite"
             ></span>
             <button
@@ -94,6 +108,7 @@
           <article
             class="rounded-2xl bg-neutral-800 py-2 px-3 shadow-lg grid grid-rows-none auto-rows-auto grid-cols-[auto_1fr] gap-6 sm:p-12 sm:gap-8 starting:opacity-0 opacity-100 transition-opacity duration-1000"
             id="success-div"
+            aria-labelledby="name"
           >
             <div
               class="h-16 w-16 sm:size-20 md:size-28 lg:size-40 rounded-full row-span-1 row-start-1 col-span-1 col-start-1 overflow-hidden"
@@ -110,10 +125,10 @@
               class="row-span-1 row-start-1 col-span-1 col-start-2 flex flex-col sm:flex-row sm:justify-between"
             >
               <div class="flex flex-col">
-                <p
+                <h2
                   id="name"
                   class="capitalize font-bold text-preset-1 text-neutral-700 sm:leading-none"
-                ></p>
+                ></h2>
                 <p id="user-name" class="text-primary"></p>
               </div>
               <p id="joined-date" class="text-preset-6 text-neutral-500"></p>
@@ -124,78 +139,93 @@
             >
               <p id="bio" class="text-neutral-500"></p>
 
-              <ul
+              <dl
                 class="py-4 px-5 bg-neutral-100 rounded-[10px] grid sm:grid-cols-3 gap-4"
               >
-                <li class="flex flex-col-reverse gap-1">
-                  <span
+                <div class="flex flex-col gap-1">
+                  <dt class="text-preset-7 text-neutral-500 capitalize">
+                    repos
+                  </dt>
+                  <dd
                     id="repositories"
                     class="font-bold text-neutral-700 text-preset-2"
-                  ></span
-                  ><span class="text-preset-7 text-neutral-500 capitalize"
-                    >repos</span
-                  >
-                </li>
-                <li class="flex flex-col-reverse gap-1">
-                  <span
+                  ></dd>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <dt class="text-preset-7 text-neutral-500 capitalize">
+                    followers
+                  </dt>
+                  <dd
                     id="followers"
                     class="font-bold text-neutral-700 text-preset-2"
-                  ></span
-                  ><span class="text-preset-7 text-neutral-500 capitalize"
-                    >followers</span
-                  >
-                </li>
-                <li class="flex flex-col-reverse gap-1">
-                  <span
+                  ></dd>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <dt class="text-preset-7 text-neutral-500 capitalize">
+                    following
+                  </dt>
+                  <dd
                     id="following"
                     class="font-bold text-neutral-700 text-preset-2"
-                  ></span
-                  ><span class="text-preset-7 text-neutral-500 capitalize"
-                    >following</span
-                  >
-                </li>
-              </ul>
+                  ></dd>
+                </div>
+              </dl>
 
-              <ul class="grid md:grid-cols-2 gap-8">
-                <li class="flex items-center gap-4">
-                  <img src="./assets/icon-location.svg" alt="" />
-                  <p id="location" class="text-preset-6 text-neutral-500"></p>
-                </li>
-                <li class="flex items-center gap-4">
-                  <img src="./assets/icon-twitter.svg" alt="" />
-                  <p
+              <dl class="grid md:grid-cols-2 gap-8">
+                <div class="flex items-center gap-4">
+                  <dt>
+                    <img src="./assets/icon-location.svg" alt="" />
+                    <span class="sr-only">Location</span>
+                  </dt>
+                  <dd id="location" class="text-preset-6 text-neutral-500"></dd>
+                </div>
+                <div class="flex items-center gap-4">
+                  <dt>
+                    <img src="./assets/icon-twitter.svg" alt="" />
+                    <span class="sr-only">Twitter Link</span>
+                  </dt>
+                  <dd
                     id="twitterLink"
                     class="text-preset-6 text-neutral-500"
-                  ></p>
-                </li>
-                <li class="flex items-center gap-4">
-                  <img src="./assets/icon-website.svg" alt="" />
-                  <p id="website" class="text-preset-6 text-neutral-500"></p>
-                </li>
-                <li class="flex items-center gap-4">
-                  <img src="./assets/icon-company.svg" alt="" />
-                  <p id="company" class="text-preset-6 text-neutral-500"></p>
-                </li>
-              </ul>
+                  ></dd>
+                </div>
+                <div class="flex items-center gap-4">
+                  <dt>
+                    <img src="./assets/icon-website.svg" alt="" />
+                    <span class="sr-only">Website</span>
+                  </dt>
+                  <dd id="website" class="text-preset-6 text-neutral-500"></dd>
+                </div>
+                <div class="flex items-center gap-4">
+                  <dt>
+                    <img src="./assets/icon-company.svg" alt="" />
+                    <span class="sr-only">Company</span>
+                  </dt>
+                  <dd id="company" class="text-preset-6 text-neutral-500"></dd>
+                </div>
+              </dl>
             </div>
           </article>
 
           <article
             id="error-div"
             aria-live="polite"
-            class="rounded-2xl bg-neutral-800 p-12 shadow-lg starting:opacity-0 opacity-100 transition-opacity duration-1000 text-neutral-300 hidden flex-col text-center items-center gap-4"
+            aria-labelledby="no-results-heading"
+            class="rounded-2xl bg-neutral-800 p-12 shadow-lg starting:opacity-0 opacity-100 transition-opacity duration-1000 text-neutral-300 sr-only flex-col text-center items-center gap-4"
           >
-            <p class="text-neutral-700 text-preset-2">No results found!</p>
-            <p class="text-preset-6">
-              We couldn’t find any GitHub users matching your search. Please
-              double-check the username and try again.
-            </p>
+            <h2
+              class="text-neutral-700 text-preset-2"
+              id="no-results-heading"
+            ></h2>
+            <p class="text-preset-6"></p>
           </article>
         </section>
       </div>
     </main>
 
-    <footer class="mt-auto text-center text-sm text-neutral">
+    <footer
+      class="text-center text-sm text-neutral p-2 xl:absolute xl:top-full xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-full"
+    >
       <p>
         Challenge by
         <a

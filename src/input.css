@@ -7,8 +7,10 @@
   --font-space-mono: "Space Mono", sans-serif;
 
   /* colors */
-  --color-primary: #0079ff;
-  --color-primary-hover: #60abff;
+  /* --color-primary: #0079ff; */
+  --color-primary: #0171dc;
+  /* --color-primary-hover: #60abff; */
+  --color-primary-hover: #3976cf;
   --color-neutral: #141d2f;
   --color-neutral-soft: #4b6a9b;
   --color-neutral-100: #f6f8ff;

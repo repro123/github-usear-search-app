@@ -9,6 +9,8 @@ const searchInput = document.querySelector("#search-input");
 const searchInputMsg = document.querySelector("#search-error-msg");
 const successDiv = document.querySelector("#success-div");
 const errorDiv = document.querySelector("#error-div");
+const errorHeading = errorDiv.querySelector("h2");
+const errorParagraph = errorDiv.querySelector("p");
 
 const githubProfileImage = document.querySelector("#github-profile-image");
 const githubName = document.querySelector("#name");
@@ -24,6 +26,10 @@ const githubWebsite = document.querySelector("#website");
 const githubCompany = document.querySelector("#company");
 
 const toggleModeBtn = document.querySelector("#toggleModeBtn");
+
+const themeStatus = document.querySelector("#theme-status");
+const resultsStatus = document.querySelector("#results-status");
+
 let inputVal;
 
 toggleModeBtn.addEventListener("click", function () {
@@ -33,6 +39,9 @@ toggleModeBtn.addEventListener("click", function () {
   html.classList.remove("dark", "light");
   html.classList.add(newTheme);
   localStorage.setItem("theme", newTheme);
+
+  themeStatus.textContent =
+    newTheme === "dark" ? "Dark mode now active" : "Light mode now active";
 });
 
 function validateInput() {
@@ -70,7 +79,7 @@ async function initApp() {
     console.error(error, error.message);
     searchInputMsg.textContent = error.message;
     searchInput.setAttribute("data-invalid", "true");
-    showErrorUI(errorDiv, successDiv);
+    showErrorUI(errorDiv, successDiv, resultsStatus);
   }
 }
 
@@ -127,31 +136,50 @@ async function renderData(data) {
     <span class="opacity-80">Not available</span>
     `;
 
-  showSuccessUI(errorDiv, successDiv);
+  showSuccessUI(errorDiv, successDiv, resultsStatus);
 }
 
-function showErrorUI(error, success) {
-  error.classList.remove("hidden");
+function showErrorUI(error, success, resultsStatus) {
+  error.classList.remove("sr-only");
   error.classList.add("flex");
+  errorHeading.textContent = "No results found!";
+  errorParagraph.textContent =
+    "We couldn’t find any GitHub users matching your search. Please double-check the username and try again.";
   success.classList.add("hidden");
   success.classList.remove("grid");
+  resultsStatus.textContent = "";
 }
 
-function showSuccessUI(error, success) {
-  error.classList.add("hidden");
+function showSuccessUI(error, success, resultsStatus) {
+  error.classList.add("sr-only");
   error.classList.remove("flex");
+  errorHeading.textContent = "";
+  errorParagraph.textContent = "";
   success.classList.remove("hidden");
   success.classList.add("grid");
+  resultsStatus.textContent = `Showing results for ${inputVal}`;
 }
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   if (!validateInput()) return;
 
-  console.log("form submitted");
+  const url = new URL(window.location.href);
+  url.searchParams.set("user", inputVal);
+  history.pushState({}, "", url);
   initApp();
 });
 
-searchInput.value = "octocat";
-inputVal = "octocat";
+const url = new URL(window.location.href);
+const usernameParam = url.searchParams.get("user");
+
+inputVal = usernameParam || "octocat";
+searchInput.value = inputVal;
 initApp();
+
+window.addEventListener("popstate", function () {
+  const url = new URL(window.location.href);
+  const userFromUrl = url.searchParams.get("user");
+  inputVal = searchInput.value = userFromUrl || "octocat";
+  initApp();
+});

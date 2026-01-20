@@ -67,6 +67,66 @@ This project helped me strengthen several important frontend concepts:
 - Better validation & error handling
   Input validation and API errors are handled explicitly and surfaced clearly to the user.
 
+- Accessibility & UX Enhancements
+
+This project goes beyond the basic requirements by incorporating several accessibility and usability improvements:
+
+Accessibility
+
+- Implemented semantic HTML landmarks (header, main, article, footer) to improve screen reader navigation.
+- Used proper heading structure, ensuring the user’s name is announced as a heading.
+- Replaced generic lists with description lists `<dl>` for key–value data such as repositories, followers, and profile metadata.
+- Added ARIA live regions to announce:
+- Theme changes (e.g. “Dark mode now active”)
+- Search result updates (e.g. “Showing results for octocat”)
+- Error messages when no user is found
+- Ensured live regions are not hidden with display: none and that content is only injected when needed to prevent announcements on page load.
+
+Improved form accessibility by:
+
+- Using type="search"
+- Programmatically associating error messages with the input via aria-describedby
+- Icons used as labels include appropriate text alternatives, while decorative icons use empty alt attributes.
+- Focus and hover states were reviewed to maintain sufficient color contrast.
+
+Usability & UX
+
+- Implemented URL search parameters using the URL and history APIs:
+- Each search updates the ?user= query string
+
+  ```js
+  const url = new URL(window.location.href);
+  url.searchParams.set("user", inputVal);
+  history.pushState({}, "", url);
+  ```
+
+- Searches can be bookmarked and shared
+- Browser back/forward navigation restores previous searches
+  ```js
+  window.addEventListener("popstate", function () {
+    const url = new URL(window.location.href);
+    const userFromUrl = url.searchParams.get("user");
+    inputVal = searchInput.value = userFromUrl || "octocat";
+    initApp();
+  });
+  ```
+
+```
+
+- On first page load, the app automatically displays the Octocat profile, as specified in the challenge requirements.
+
+Theme preference is:
+
+- Read from localStorage when available
+- Otherwise derived from the user’s system preference using prefers-color-scheme
+
+_What I Learned_
+
+- How to correctly use ARIA live regions without causing unintended announcements
+- Why large content containers should not be marked as live regions
+- How small accessibility enhancements can significantly improve UX for screen reader users
+- How syncing UI state with the URL improves navigation, shareability, and user confidence
+
 ### Continued development
 
 Things I would like to improve or explore further:
@@ -80,3 +140,4 @@ Things I would like to improve or explore further:
 
 - Frontend Mentor - [repro123](https://www.frontendmentor.io/profile/repro123)
 - Twitter - [Dr_Repro](https://www.twitter.com/Dr_Repro)
+```
